@@ -36,7 +36,7 @@ const ContentSchema = new Schema({
   color: { type: String, required: true },
   clothingforwho: {
     type: String,
-    enum: ["Men", "Kids", "Women","Unisex"],
+    enum: ["Men", "Kids", "Women", "Unisex"],
     required: true,
   },
   price: { type: Number, required: true },
@@ -47,6 +47,7 @@ const ContentSchema = new Schema({
     required: true,
     index: true,
   }, // Reference to User collection
+  Size: { type: String, required: true },
 });
 
 export const ContentModel = model("Content", ContentSchema);

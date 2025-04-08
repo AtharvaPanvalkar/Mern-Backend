@@ -117,9 +117,10 @@ app.post("/api/v1/upload",usermiddleware, async(req, res) => {
     const available = req.body.available;
     const color=req.body.color;
      const clothingforwho = req.body.clothingforwho;
+     const Size =req.body.Size;
     // @ts-ignore
     const owner = req.userID;
-    if (!mi || !name || !description || !price||!color ||!clothingforwho || available === undefined) {
+    if (!mi || !name || !description || !price||!color ||!clothingforwho|| !Size || available === undefined) {
       return res.status(400).json({ error: "All fields are required." });
     }
 
@@ -137,7 +138,8 @@ app.post("/api/v1/upload",usermiddleware, async(req, res) => {
       available: available,
       owner: owner,
       clothingforwho:clothingforwho,
-      color:color
+      color:color,
+      Size:Size
     });
 
     res.json({ message: "Content uploaded successfully" + newcontent });
@@ -244,7 +246,7 @@ app.get("/api/v1/seller/:id", async (req, res) => {
 });
 interface SearchQuery {
   q?: string;
-  filter?: "all" | "store" | "product" | "location" | "color" | "Forwhom" | "desc";
+  filter?: "all" | "store" | "product" | "location" | "color" | "Forwhom" | "desc"| "Size";
 }
 
 interface SearchResult {
@@ -269,9 +271,14 @@ app.get("/api/v1/search", async (req, res) => {
     } else if (filter === "product") {
       results = await ContentModel.find(
         { name: { $regex: query, $options: "i" } },
-        "owner name color  description clothingforwho available price multipleImages"
+        "owner name color Size  description clothingforwho available price multipleImages"
       ).limit(10);
-    } else if (filter === "location") {
+    } else if (filter === "Size") {
+      results = await ContentModel.find(
+        { Size: { $regex: query, $options: "i" } },
+        "owner name color Size  description clothingforwho available price multipleImages"
+      ).limit(10);}
+      else if (filter === "location") {
       results = await Sellerinfomodel.find(
         { location: { $regex: query, $options: "i" } },
         "name Profilepic location contact"
@@ -279,17 +286,17 @@ app.get("/api/v1/search", async (req, res) => {
     } else if (filter === "color") {
       results = await ContentModel.find(
         { color: { $regex: query, $options: "i" } },
-        "owner name color description clothingforwho available price multipleImages"
+        "owner name color Size description clothingforwho available price multipleImages"
       ).limit(10);
     } else if (filter === "Forwhom") {
       results = await ContentModel.find(
         { clothingforwho: { $regex: query, $options: "i" } },
-        "owner name color description clothingforwho available price multipleImages"
+        "owner name color Size description clothingforwho available price multipleImages"
       ).limit(10);
     } else if (filter === "desc") {
       results = await ContentModel.find(
         { description: { $regex: query, $options: "i" } },
-        "owner name color description clothingforwho available price multipleImages"
+        "owner name color Size description clothingforwho available price multipleImages"
       ).limit(10);
     }
     res.json(results);
