@@ -441,6 +441,39 @@ app.post("/api/v1/check", usermiddleware, async (req, res) => {
 // Archive a product
 
 
+app.delete("/seller/delete-business/:ownerId", async (req, res) => {
+  const { ownerId } = req.params;
 
+  try {
+    // Delete all content for this owner
+    await ContentModel.deleteMany({ owner: ownerId });
+
+    // Delete seller info
+    await Sellerinfomodel.deleteOne({ owner: ownerId });
+
+    // Delete user
+    await UserModel.deleteOne({ _id: ownerId });
+
+    res
+      .status(200)
+      .json({ message: "Business and related data deleted successfully." });
+  } catch (error) {
+    console.error("Error deleting business:", error);
+    res.status(500).json({ message: "Server error while deleting business." });
+  }
+});
+//@ts-ignore
+// In seller route
+app.get("/seller/all", async (req, res) => {
+  try {
+    const allSellers = await Sellerinfomodel.find();
+    res.status(200).json(allSellers);
+  } catch (err) {
+    console.error("Fetch sellers error:", err);
+    res.status(500).json({ message: "Failed to fetch sellers." });
+  }
+});
+
+//aandjdnkankdn
 
 app.listen(3000);
