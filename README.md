@@ -5,9 +5,9 @@ To run backend code use command :
 npm start
 
 
-It will start the server 
-We have used MongoDB as Database stored on cloud 
-Backend is Deployed using Render 
+It will start the server.
+We have used MongoDB as Database stored on cloud.
+Backend is deployed using Render 
 
 
 check packege.json for scrpits     
