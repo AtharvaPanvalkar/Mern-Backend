@@ -1,8 +1,8 @@
 Code is written in typescript  
 
 To run backend code use command :     
+  npm start
 
-npm start
 
 
 It will start the server.
